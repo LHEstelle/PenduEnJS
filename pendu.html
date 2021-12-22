@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="meteo.css" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!--ICI CDN BOOTSRAP-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.1/font/bootstrap-icons.css">
+    <title>JS</title>
+</head>
+
+<body>
+
+
+
+
+    <a href="pendu.html" id="newGame" class="m-5">Nouvelle partie</a>
+    <div class="row justify-content-center text-center m-5" id="petName"></div>
+    <div class="m-5 text-success fw-bold" id="compteur">Vies : <span class="m-5 text-success fw-bold" id="myLife">| | |
+            | | | | |</span></div>
+    <div class="myKeyboard justify-content-center text-center" id="myKeyboard"></div>
+
+
+
+
+
+    <script>
+        let play = true
+        const alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
+            't', 'u', 'v', 'w', 'x', 'y', 'z'
+        ]
+        const myKeyboard = document.getElementById("myKeyboard")
+        const petName = document.getElementById("petName")
+        const petlist = ["elephant", "zebre", "girafe", "dromadaire", "faon"];
+
+
+        let pet = petlist[aleaNumber(0, petlist.length)]
+        let animal = ""
+        const arrayPet = pet.split("");
+        console.log(pet)
+        
+        alphabet.forEach(element => {
+            let myLetter = element;
+            myLetter = myLetter.toUpperCase();
+            let myKey =
+                `<button class = "m-2 col-2 btn btn-outline-dark" id = "myKey${myLetter}">${myLetter} </button>`;
+            myKeyboard.innerHTML += myKey;
+        });
+
+        function aleaNumber(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min)) + min;
+        }
+
+        arrayPet.forEach((element, index) => {
+            let myUnder = element;
+            let myIndex = index
+            let myAffichage =
+                `<div class="letterOne border border-dark col-lg-1 col-1 rounded text-center m-1" id="indexLetter${myIndex}"></div>`;
+            petName.innerHTML += myAffichage;
+        });
+
+        let nbLetter = 0;
+        let life = 8;
+
+        myKeyboard.addEventListener("click", (e) => {
+            if (e.target.nodeName == "BUTTON" && play === true) {
+                let myScore = nbLetter
+                console.log(e.target.innerText);
+                e.target.className = "m-2 col-2 btn btn-dark"
+                e.target.disabled = true
+
+                arrayPet.forEach((element, index) => {
+                    if (e.target.innerText.toLowerCase() == element) {
+                        document.getElementById(`indexLetter${index}`)
+                            .innerText = element;
+                        nbLetter++;
+                    }
+                })
+
+                if (nbLetter == arrayPet.length) {
+                    if (confirm("Gagné ! Voulez-vous rejouer?")) {
+                        location.reload()
+
+                    }
+                    play = false;
+                }
+
+                if (myScore == nbLetter) {
+                    life--
+                }
+
+            }
+            console.log(life);
+            switch (life) {
+                case 0:
+                    document.getElementById("myLife").innerHTML = ""
+                    if (confirm("Perdu! Voulez-vous rejouer?")) {
+                        location.reload();
+                    }
+                    play = false;
+
+                    break;
+                case 1:
+                    document.getElementById("myLife").innerHTML = "|"
+                    break;
+                case 2:
+                    document.getElementById("myLife").innerHTML = "| |"
+                    break;
+                case 3:
+                    document.getElementById("myLife").innerHTML = "| | |"
+                    break;
+                case 4:
+                    document.getElementById("myLife").innerHTML = "| | | |"
+                    break;
+                case 5:
+                    document.getElementById("myLife").innerHTML = "| | | | |"
+                    break;
+                case 6:
+                    document.getElementById("myLife").innerHTML = "| | | | | |"
+                    break;
+                case 7:
+                    document.getElementById("myLife").innerHTML = "| | | | | | |"
+                    break;
+
+                default:
+                    break;
+            }
+        })
+
+
+
+
+        // function searchLetter(letter, word) {
+        //     console.log(word)
+        //     let indexLetter = new Array()
+        //     arrayWord = word.split(" ")
+
+        //     for (index = 0; index <= arrayWord.length - 1; index++) {
+        //         element = arrayWord[index];
+        //         if (letter === element) {
+        //             indexLetter.push(index)
+        //         }
+        //     }
+        //     if (indexLetter.length === 0) {
+        //         return -1
+        //     } else {
+        //         return indexLetter
+        //     }
+        // }
+
+        // let display = document.getElementById("texte")
+        // 
+        // function reset(letter, word) {
+        //     document.getElementById("texte").innerHTML = ""
+        //     let animal = selectionAleatoire(animals)
+        //     let message = ""
+
+
+        //     for (index = 0; index < animal.length; index++) {
+        //         message += "_ "
+        //         console.log(message)
+        //     }
+        // }
+
+
+        // console.log(searchLetter('a', "Faon "))
+        // console.log(searchLetter("a ", selectionAleatoire(animals)))
+
+        // let mot = prompt("Proposer un mot ")
+
+
+        // if (mot.indexOf(animals) !== 1) {
+        //     window.alert("Bien joué! ")
+        // } else {
+        //     window.alert("Echec ")
+        // }
+    </script>
+</body>
+
+</html>
